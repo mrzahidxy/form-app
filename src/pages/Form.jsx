@@ -40,15 +40,20 @@ const treeData = [
   },
 ];
 
-const Form = () =>{
+const Form = () => {
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    sectors: ['0-0-0'],
+    agree: false
+  })
   const [value, setValue] = useState(['0-0-0']);
   const onChange = (newValue) => {
-    console.log('onChange ', value);
+    setUserInfo({ ...userInfo, 'sectors': newValue })
     setValue(newValue);
   };
 
-  const tProps = {   treeData,
-  
+  const tProps = {
+    treeData,
     value,
     onChange,
     treeCheckable: true,
@@ -57,31 +62,38 @@ const Form = () =>{
     style: {
       width: '100%',
     },
-    
+
   };
 
+  const userNameHnadler = (e) => {
+    setUserInfo({ ...userInfo, [e.target.name]: e.target.value })
+  }
 
-	return(
-		<div className="h-screen w-screen flex justify-center items-center">
-			<div className="bg-neutral-200 w-1/4  p-4 rounded-md">
-			<span className="">Please enter your name and pick the Sectors you are currently involved in.</span>
-				<form className="space-y-4 mt-8">
-				 <div className="flex flex-row gap-2">
-				  <label>Name:</label>
-                  <Input placeholder="Basic usage" />
-                 </div>
+  const userCheckHandler = () => setUserInfo({ ...userInfo, 'agree': !userInfo.agree })
 
-                 <div className="flex flex-row gap-2"> <span>Sectors:</span>
-                   <TreeSelect
+  console.log(userInfo)
 
-   {...tProps}
-    />
-    </div>
-                <div><input type="checkbox"/> <span> Agree to terms</span></div>
-                <button className="bg-blue-600 text-white py-1 px-3">Save</button>
-				</form>
-			</div>
-		</div>)
+  return (
+    <div className="h-screen w-screen flex justify-center items-center">
+      <div className="bg-blue-500 text-white w-1/4  p-4 rounded-md">
+        <span className="">Please enter your name and pick the Sectors you are currently involved in.</span>
+        <form className="space-y-4 mt-8">
+          <div className="flex flex-row gap-2">
+            <label className='font-medium'>Name:</label>
+            <Input placeholder="Enter Your Name" name='name' onChange={(e) => userNameHnadler(e)} />
+          </div>
+
+          <div className="flex flex-row gap-2"> <span className='font-medium'>Sectors:</span>
+            <TreeSelect
+              name="sectors"
+              {...tProps}
+            />
+          </div>
+          <div><input type="checkbox" name='agree' onChange={(e) => userCheckHandler(e)} /> <span className='font-medium'> Agree to terms</span></div>
+          <button className="bg-white text-blue-600 py-1 px-3 rounded-md">Save</button>
+        </form>
+      </div>
+    </div>)
 }
 
 export default Form;
