@@ -1,25 +1,21 @@
 import { Input, Form, Button } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthProvider";
-import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
-  const { dispatch } = useContext(AuthContext);
+import { useNavigate } from "react-router-dom";
+
+const Register = () => {
   const navigate = useNavigate();
 
   const onFinish = async (user) => {
     console.log("USER ::>>> ", user);
 
     const res = await axios.post(
-      "https://user-sector-app.vercel.app/auth/login",
+      "https://user-sector-app.vercel.app/auth/signup",
       user
     );
-
-    dispatch({ type: "LOGIN", payload: res.data });
     console.log("response :::>>>", res.data);
-    navigate("/");
+    navigate("/login");
   };
 
   return (
@@ -38,6 +34,18 @@ const Login = () => {
               initialValues={{ remember: true }}
               onFinish={onFinish}
             >
+              <Form.Item
+                name="username"
+                rules={[
+                  { required: true, message: "Please input your username!" },
+                ]}
+              >
+                <Input
+                  prefix={<MailOutlined className="site-form-item-icon" />}
+                  placeholder="Username"
+                />
+              </Form.Item>
+
               <Form.Item
                 name="email"
                 rules={[
@@ -68,18 +76,10 @@ const Login = () => {
                   htmlType="submit"
                   className="login-form-button- w-full bg-blue-500"
                 >
-                  Log in
+                  Register
                 </Button>
               </Form.Item>
             </Form>
-
-            <div className="mt-8 space-x-1">
-              <span className="text-neutral-500">Don't have an account?</span>
-
-              <Link to="/register" className={`text-blue-600 font-medium`}>
-                Register
-              </Link>
-            </div>
           </div>
         </div>
       </div>
@@ -87,4 +87,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
