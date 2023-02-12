@@ -1,13 +1,14 @@
-import { LogoutOutlined } from "@ant-design/icons";
+import { EditOutlined, LogoutOutlined } from "@ant-design/icons";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 
 const Home = () => {
   const { currentUser, dispatch } = useContext(AuthContext);
   const [profile, setProfile] = useState({});
 
-  console.log("profile", profile)
+  console.log("profile", profile);
 
   const TOKEN = currentUser?.token;
 
@@ -40,16 +41,14 @@ const Home = () => {
           <LogoutOutlined /> Logout
         </div>
       </nav>
-      <div>
-        <span>
-          Name: {profile.username}
-        </span>
-        <span>
-          Email: {profile.email}
-        </span>
-        <span>
-          {/* Sectors: {profile.sectors.map((s)=>s)} */}
-        </span>
+      <div className="flex flex-col bg-blue-600 w-72 rounded-md p-4 m-4 text-white">
+        <span>Name: {profile.username}</span>
+        <span>Email: {profile.email}</span>
+        <span>Sectors: {profile.sectors?.map((s) => s.name)}</span>
+
+        <Link to="/form" className="flex items-center gap-2">
+          <EditOutlined /> Update
+        </Link>
       </div>
     </div>
   );
